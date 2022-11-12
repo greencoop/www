@@ -11,9 +11,9 @@ jobs:
         uses: actions/checkout@v2
       - name: 📦 Get LFTP
         run: sudo apt install lftp
-      - name: 🔑 Load Secrets
-        run: echo "machine ${{ secrets.FTP_HOSTNAME }} login ${{ secrets.FTP_USERNAME }} password ${{ secrets.FTP_PASSWORD }}" > ~/.netrc
+#      - name: 🔑 Load Secrets
+#        run: echo "machine ${{ secrets.FTP_HOSTNAME }} login ${{ secrets.FTP_USERNAME }} password ${{ secrets.FTP_PASSWORD }}" > ~/.netrc
       - name: 📁 Upload via FTP
-        run:  lftp ${{ secrets.FTP_SERVER }} -e "mirror -x ^\.git/$ -x ^\.idea/$  --delete --delete-excluded -R -c --verbose . ./www/;quit"
+        run:  lftp -u ${{ secrets.FTP_USERNAME }},${{ secrets.FTP_PASSWORD }} ${{ secrets.FTP_SERVER }} -e "mirror -x ^\.git/$ -x ^\.idea/$  --delete --delete-excluded -R -c --verbose . ./www/;quit"
 
 
